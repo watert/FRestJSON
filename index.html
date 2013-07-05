@@ -4,55 +4,71 @@
 	<meta charset="UTF-8">
 	<title>
 	</title>
+	<script src="libs/jquery-1.7.1.min.js"></script>
+	<script src="libs/underscore+backbone.js"></script>
 	<link rel="stylesheet" href="libs/bootstrap2/css/bootstrap.min.css">
 	<script src="libs/bootstrap2/js/bootstrap.min.js"></script>
 
-	<script src="libs/jquery-1.7.1.min.js"></script>
-	<script src="libs/underscore+backbone.js"></script>
-	<script src="libs/less-1.2.2.min.js"></script>
+	<!-- <script src="libs/less-1.2.2.min.js"></script> -->
+	<script>
+
+		$.fn.addItem = function(msg,cls){
+			var html = _.template('<li><p class="alert alert-<%=cls%>"><%=msg%></p></li>',{msg:msg,cls:cls});
+			$(this).prepend(html);
+		};
+		window.printConsole = function(msg,cls){
+			$("#console").addItem(msg,cls);
+		};
+	</script>
 </head>
-<body>
-	<div class="container-fluid">
-		<h1 class="page-header">Configer <small>Config Editor</small></h1>
-		<!-- 
-		<ul class="breadcrumb">
-			<li><a href="">Hey</a> <span class="divider">/</span></li>
-			<li class="active">1 </li>
-		</ul> -->
-		<div class="row-fluid">
-			<div class="span3">
-				<div class="">
-					<div>
-						<div class="pull-right">
-							<button class="btn btn-mini">Add</button>
-						</div>
-						<p class="lead">
-							<strong>TITLE</strong>
-						</p>
-					</div>
-					<ul class="unstyled nav nav-list">
-						<li>
-							<span class="pull-right muted">
-								<i class="icon-trash"></i>
-								<i class="icon-remove"></i>
-							</span>
-							<a href="">Hey</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="span9">
-				<form action="" class="form">
-					<p class="actions form-inline">
-						<span class="">
-						</span>
-						<input type="text" class="input-xxlarge" placeholder="Config Name">
-						<button class="btn btn-primary">Save</button>
-					</p>
-					<hr>
-					<textarea class="input-block-level" name="" id="" cols="30" rows="10"></textarea>
-				</form>
-			</div>
+<body class="container">
+	<div class="row">
+		<div class="span6">
+			<h3 class="page-header">File Rest Test Cases</h3>
+			<h4>Results Here</h4>
+			<ol id="console" class="unstyled">
+				
+			</ol>
+			<script>
+				var url = "file_rest.php?f=test.json";
+				$.post(url,{test:"content"},function(data){
+					printConsole("POST successfully","success");
+					$.get(url,function(data){
+						printConsole("GET successfully","success");
+						$.ajax({
+							url:url,
+							type:"DELETE",
+							success:function(){
+								printConsole("DELETE successfully","success");
+							}
+						});
+					});
+				});
+				var Model = Backbone.Model.extend({
+					url:"file_rest.php?f=testbb.json"
+				});
+				var m = new Model({
+					id:"testbb", //Backbone needs a id attr to identify !isNew().
+					"case":"backbone test"
+				});
+				window.m = m;
+				m.save({},{
+					success:function(){
+						printConsole("Backbone Save success","success");
+						m.fetch({success:function(){
+							printConsole("Backbone Fetch success","success");
+							console.log("Fetch Model",m.toJSON());
+							m.destroy({success:function(){
+								printConsole("Backbone Destroy success","success");
+
+							}});
+						}});
+					}
+				});
+			</script>
+		</div>
+		<div class="span6">
+			
 		</div>
 	</div>
 </body>

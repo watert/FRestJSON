@@ -26,7 +26,7 @@ if(!count($_GET)){
 	http_ret(
 		"Use it as RESTful Server using URL like this: <br>
 		<code>http://xxxxxxx/file_rest.php?f=filename.ext</code><br>
-		<a href='file_rest_test.html'>Test cases here.</a><br>
+		<a href='./'>Test cases here.</a><br>
 		<div style='font-family:consolas;color:orange'> <strong>WARNING:</strong> Support JSON ext only. </div>
 		");
 	exit();
