@@ -14,7 +14,8 @@ Like this:
 
 ```javascript
 var url = "file_rest.php?f=test.json";
-$.post(url,{case:"jQuery directly"},function(data){ // Saving
+var data = {case:"jQuery directly"};
+$.post(url,data,function(data){ // Saving
 	/*TODOs*/ });
 $.get(url,function(data){ // Fetching
 	/*TODOs*/ });
@@ -28,12 +29,12 @@ Or a Backbonejs way:
 
 ```javascript
 var url = "file_rest.php?f=test.json";
-var model = new Backbone.Model();
-model.url = url;
-model.set({
+var data = {
 	id:url, // NOTICE: backbone way always needs an ID
 	case:"Backbone model accessing"
-});
+};
+var model = new Backbone.Model(data);
+model.url = url;
 model.save(); // Saving
 model.fetch(); // Fetching
 model.destroy(); // Deleting
