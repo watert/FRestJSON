@@ -1,0 +1,38 @@
+
+.modColor(@hue,@sat,@light:85%){
+	@color:hsl(@hue,@sat,@light);
+	border-color:@color;
+	
+	strong,h3,h4,h5,h6 { color:desaturate(darken(@color,15%),10%) }
+	
+	.mod-header {  
+		background-color:lighten(@color,0.8*(100%-@light)); 
+		border-color: lighten(@color,0.7*(100%-@light));  }
+	.mod-footer { 
+		background-color:desaturate(lighten(@color,0.9*(100%-@light)),20%); 
+
+	}
+}
+.mod {
+	@hue:120;@sat:0%;
+	font-size:14px;
+	border:1px solid hsl(@hue,@sat,85%);
+	border-radius:3px; margin-bottom:1em;
+	.mod-body,.mod-header,.mod-footer {
+		padding:6px; min-height:1em;
+	}
+	.mod-header {
+		border-bottom:1px solid hsl(@hue,@sat,92%);
+		margin-bottom:5px;
+		strong,h3,h4,h5,h6 {margin:0;font-size:14px;}
+		.btn {margin-top:-1px;}
+	}
+	.btn {padding:0px 6px;}
+	
+	.modColor(0,0%,75%);
+}
+.mod-warning { .modColor(30,90%); }
+.mod-success { .modColor(120,80%,60%); }
+.mod-info { .modColor(200,80%,80%); }
+.mod-error { .modColor(0,80%,80%); }
+.mod-primary { .modColor(210,80%,50%); }

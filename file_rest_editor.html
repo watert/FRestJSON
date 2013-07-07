@@ -4,16 +4,117 @@
 	<meta charset="UTF-8">
 	<title>
 	</title>
+	<script src="libs/jquery-1.7.1.min.js"></script>
+	<script src="libs/underscore+backbone.js"></script>
 	<link rel="stylesheet" href="libs/bootstrap2/css/bootstrap.min.css">
 	<script src="libs/bootstrap2/js/bootstrap.min.js"></script>
 
-	<script src="libs/jquery-1.7.1.min.js"></script>
-	<script src="libs/underscore+backbone.js"></script>
+	<style type="text/less">
+		.modColor(@hue,@sat,@light:85%){
+			@color:hsl(@hue,@sat,@light);
+			border-color:@color;
+			
+			strong,h3,h4,h5,h6 { color:desaturate(darken(@color,15%),10%) }
+			
+			.mod-header {  
+				background-color:lighten(@color,0.8*(100%-@light)); 
+				border-color: lighten(@color,0.7*(100%-@light));  }
+			.mod-footer { 
+				background-color:desaturate(lighten(@color,0.9*(100%-@light)),20%); 
+
+			}
+		}
+		.mod {
+			@hue:120;@sat:0%;
+			font-size:14px;
+			border:1px solid hsl(@hue,@sat,85%);
+			border-radius:3px; margin-bottom:1em;
+			.mod-body,.mod-header,.mod-footer {
+				padding:6px; min-height:1em;
+			}
+			.mod-header {
+				border-bottom:1px solid hsl(@hue,@sat,92%);
+				margin-bottom:5px;
+				strong,h3,h4,h5,h6 {margin:0;font-size:14px;}
+				.btn {margin-top:-1px;}
+			}
+			.btn {padding:0px 6px;}
+			
+			.modColor(0,0%,75%);
+		}
+		.mod-warning { .modColor(30,90%); }
+		.mod-success { .modColor(120,80%,60%); }
+		.mod-info { .modColor(210,80%,80%); }
+	</style>
 	<script src="libs/less-1.2.2.min.js"></script>
+	<script>
+		(function($,undefined){
+			$.fn.quickmodal = function(config){
+				var that = this;
+				if(typeof(config)=="string"){
+					var domModal = $(that).data("quickmodal");
+					if(!domModal)return false;
+					domModal.modal(config);
+					return domModal;
+				}
+
+				var domModal = $("<div>",{"class":"modal hide"});
+				config = $.extend({
+					title:"Title",
+					actions:{
+						Cancel:function(){
+							domModal.modal("hide");
+						}
+					}
+				},config);
+
+				var html = '<div class="modal-header">'
+						+'<button type="button" class="close" data-dismiss="modal" '
+							+'aria-hidden="true">&times;</button>'
+						+'<h3>'+config.title+'</h3></div>'
+					+'<div class="modal-body"></div>'
+					+'<div class="modal-footer"></div>';
+				domModal.html(html);
+				domModal.find(".modal-body").append(that);
+
+				//append Actions
+				var footer = domModal.find(".modal-footer");
+				$.each(config.actions,function(key,value){
+					$("<button>",{type:"button",class:"btn",text:key}).click(value).appendTo(footer);
+				});
+				domModal.modal("show");
+
+				$(that).data("quickmodal",domModal);
+				return domModal;
+			};
+		})(jQuery);
+	</script>
 </head>
 <body>
+	<form id="test" class="form hide">
+		<legend>Hello</legend>
+		<label for="">Something</label><input type="text" value="hello">
+	</form>
+	<script>
+		var config = {
+			title:"Hello World",
+			actions:{
+				Save:function(){
+					console.log("save");
+				},
+				Cancel:function(){
+					$("#test").quickmodal("hide");
+				}
+			}
+		};
+		// $("#test").quickmodal(config);
+	</script>
 	<div class="container-fluid">
-		<h1 class="page-header">Configer <small>Config Editor</small></h1>
+		<h1 class="page-header">
+			Configer 
+			<small>Config Editor</small>
+		</h1>
+
 		<!-- 
 		<ul class="breadcrumb">
 			<li><a href="">Hey</a> <span class="divider">/</span></li>
@@ -21,24 +122,54 @@
 		</ul> -->
 		<div class="row-fluid">
 			<div class="span3">
-				<div class="">
-					<div>
-						<div class="pull-right">
-							<button class="btn btn-mini">Add</button>
-						</div>
-						<p class="lead">
-							<strong>TITLE</strong>
-						</p>
+				<div class="mod">
+					<div class="mod-header">
+						<h4>Hello World (Normal)</h4>
 					</div>
-					<ul class="unstyled nav nav-list">
-						<li>
-							<span class="pull-right muted">
-								<i class="icon-trash"></i>
-								<i class="icon-remove"></i>
-							</span>
-							<a href="">Hey</a>
-						</li>
-					</ul>
+					<div class="mod-body">
+						<p class="lead">Text Light</p>
+					</div>
+					<div class="mod-footer"> <button class="btn">Hey</button> </div>
+				</div>
+				<div class="mod mod-success">
+					<div class="mod-header">
+						<h4>Hello World (Success)</h4>
+					</div>
+					<div class="mod-body">
+						<p class="lead">Text Light</p>
+					</div>
+					<div class="mod-footer"> <button class="btn">Hey</button> </div>
+				</div>
+				<div class="mod mod-info">
+					<div class="mod-header">
+						<h4>Hello World (info)</h4>
+					</div>
+					<div class="mod-body">
+						<p class="lead">Text Light</p>
+					</div>
+					<div class="mod-footer"> <button class="btn">Hey</button> </div>
+				</div>
+				<div class="mod mod-warning">
+					<div class="mod-header">
+						<span class="pull-right">
+							<button class="btn"> <i class="icon-plus"></i> Add</button>
+						</span>
+						<strong>Hello World (Warning)</strong>
+						<!-- <h4>Hello World</h4> -->
+					</div>
+					<div class="mod-body">
+						
+						<ul class="unstyled nav nav-list">
+							<li>
+								<span class="pull-right muted">
+									<i class="icon-trash"></i>
+									<i class="icon-remove"></i>
+								</span>
+								<a href="">Hey</a>
+							</li>
+						</ul>
+					</div>
+					<div class="mod-footer"> <button class="btn">Hey</button> </div>
 				</div>
 			</div>
 			<div class="span9">
