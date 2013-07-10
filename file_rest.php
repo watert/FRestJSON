@@ -55,6 +55,14 @@ switch($method){
 		if(!$is_exists)http_400("File not exists.");
 		else http_json_raw($content);
 		break;
+	case "PATCH":
+		$json = json_decode($content,true);
+		foreach ($data as $key => $value) {
+			$json[$key] = $value;
+		}
+		file_put_contents($fpath, json_encode($json));
+		http_json($json);
+		break;
 	case "PUT":
 	case "POST":
 		// print_r($_POST);
