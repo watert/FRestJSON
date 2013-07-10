@@ -22,11 +22,18 @@
 */
 (function($,undefined){
 	$.fn.quickmodal = function(config){
-		var that = this;
+		var that = this,
+			$el = $(this);
 		if(typeof(config)=="string"){
 			var domModal = $(that).data("quickmodal");
 			if(!domModal)return false;
-			domModal.modal(config);
+			switch(config){
+				case "data":
+					var data = domModal.data("data");
+					break;
+				default:
+					domModal.modal(config);				
+			}
 			return domModal;
 		}
 
@@ -39,7 +46,7 @@
 				}
 			}
 		},config);
-
+		domModal.data("data",config);
 		var html = '<div class="modal-header">'
 				+'<button type="button" class="close" data-dismiss="modal" '
 					+'aria-hidden="true">&times;</button>'
@@ -52,11 +59,12 @@
 		//append Actions
 		var footer = domModal.find(".modal-footer");
 		$.each(config.actions,function(key,value){
-			$("<button>",{type:"button",class:"btn",text:key}).click(value).appendTo(footer);
+			$("<button>",{type:"button","class":"btn",text:key})
+				.click(value).appendTo(footer);
 		});
 		domModal.modal("show");
 
-		$(that).data("quickmodal",domModal).show();
+		$el.data("quickmodal",domModal).show();
 		return domModal;
 	};
 })(jQuery);
