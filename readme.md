@@ -10,10 +10,10 @@ Feel free for prototyping & intranet developing. :)
 
 Put file_rest.php any where, json files will store at the same directory.
 
-Like this:
+Examples :
 
 ```javascript
-var url = "file_rest.php?f=test.json";
+var url = "data/file/test.json";
 var data = {case:"jQuery directly"};
 $.post(url,data,function(data){ // Saving
 	/*TODOs*/ });
@@ -28,7 +28,7 @@ $.ajax({url:url, // Deleting
 Or a Backbonejs way:
 
 ```javascript
-var url = "file_rest.php?f=test.json";
+var url = "data/file/test2.json";
 var data = {
 	id:url, // NOTICE: backbone way always needs an ID
 	case:"Backbone model accessing"
@@ -40,10 +40,21 @@ model.fetch(); // Fetching
 model.destroy(); // Deleting
 ```
 
+Collection Style: 
+
+*ATTENSION:* url ends with a slash.
+
+```javascript
+var collection = new Backbone.Collection();
+collection.url = "data/list/testlist.json/"; 
+collection.add({data:"testing"});
+collection.at(0).save();
+```
+
 If file not exists, will return an 400 HTTP Error.
 
 ### TODOs
 
 * More error infos like file editing permissions detect.
-* support a list style Restful CRUD with a ID attribute
+* *DONE* support a list style Restful CRUD with a ID attribute
 	* list may support simple filtering & ordering
