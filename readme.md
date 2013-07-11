@@ -39,6 +39,7 @@ model.save(); // Saving
 model.fetch(); // Fetching
 model.destroy(); // Deleting
 ```
+If file not exists, will return an 400 HTTP Error.(File style only)
 
 Collection Style: 
 
@@ -51,7 +52,6 @@ collection.add({data:"testing"});
 collection.at(0).save();
 ```
 
-If file not exists, will return an 400 HTTP Error.
 
 ### TODOs
 
