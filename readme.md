@@ -49,7 +49,9 @@ Collection Style:
 var collection = new Backbone.Collection();
 collection.url = "data/list/testlist.json/"; 
 collection.add({data:"testing"});
-collection.at(0).save();
+collection.at(0).save({},{success:function(){
+	collection.at(0).destroy();
+}});
 ```
 
 
