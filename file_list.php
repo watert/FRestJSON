@@ -3,6 +3,8 @@
  * # File List Service
  * 
 */
+
+print_r($_GET);exit();
 define(JSON_ENABLED, TRUE);
 
 function http_ret($msg){

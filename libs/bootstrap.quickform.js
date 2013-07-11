@@ -44,6 +44,9 @@
 				Cancel:function(){
 					domModal.modal("hide");
 				}
+			},
+			success:function(){
+				
 			}
 		},config);
 		domModal.data("data",config);

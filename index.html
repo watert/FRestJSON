@@ -19,6 +19,7 @@
 		window.printConsole = function(msg,cls){
 			$("#console").addItem(msg,cls);
 		};
+		// alert("sd");
 	</script>
 </head>
 <body class="container">
@@ -60,10 +61,19 @@
 							console.log("Fetch Model",m.toJSON());
 							m.destroy({success:function(){
 								printConsole("Backbone Destroy success","success");
-
 							}});
 						}});
 					}
+				});
+
+				var Coll = Backbone.Collection.extend({
+					url:"file_rest.php?f=testlist.json&list=true/",
+					model:Backbone.Model.extend({
+						initialize:function(data){
+							var id = data.id;
+							this.url = this.collection.url+"&id="+id;
+						}
+					})
 				});
 			</script>
 		</div>
