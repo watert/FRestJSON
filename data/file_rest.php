@@ -122,7 +122,26 @@ function http_json($data){
 	http_json_raw($data);
 }
 
-if(!count($_GET)){
+
+
+
+if(isset($_GET["f"])){ // Original Fashion: using QUERYSTRING as input, non need of apache rewrite support
+	$fpath = $_GET["f"];
+	$is_list = isset($_GET["list"]);
+}else {
+	$url_sections = array_reverse(explode("/", $_SERVER["REDIRECT_URL"]));
+	if($url_sections[0]==""){
+		$is_list = TRUE;
+		$fpath = $url_sections[1];
+	} else {
+		$is_list = FALSE;
+		$fpath = $url_sections[0];
+	}
+}
+
+
+$ext = pathinfo($fpath, PATHINFO_EXTENSION);
+if($ext!="json"){
 	http_ret(
 		"Use it as RESTful Server using URL like this: <br>
 		<code>http://xxxxxxx/file_rest.php?f=filename.ext</code><br>
@@ -131,24 +150,17 @@ if(!count($_GET)){
 		");
 	exit();
 }
-if(!isset($_GET["f"])){
-	http_400("Not set GET[f].");
-}
-
-$fpath = $_GET["f"];
-$ext = pathinfo($fpath, PATHINFO_EXTENSION);
-if($ext!="json")http_400("EXT $ext NOT SUPPORTED.");
-
-$method = $_SERVER["REQUEST_METHOD"];
 
 // Default use Backbonejs input type: Content inside `php://input` .
 $data = json_decode(file_get_contents('php://input'),true);
 if(!$data)$data = $_POST;
 
-
+// Init File Rest handler
 $frest = new FRest();
 $frest->load($fpath);
-if(isset($_GET["list"])){
+
+$method = $_SERVER["REQUEST_METHOD"];
+if($is_list){
 	$frest->list_init();
 	switch($method){
 		case "GET":

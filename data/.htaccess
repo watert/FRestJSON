@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteRule ^test\.php$ - [L]
+RewriteRule ^file_rest\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule frestlist/ test.php [L]
+RewriteRule list|file file_rest.php [L]
 </IfModule>
