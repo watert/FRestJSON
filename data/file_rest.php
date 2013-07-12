@@ -4,6 +4,7 @@
  * 
 */
 
+$base_path = "";
 define(JSON_ENABLED, TRUE);
 Class FRest {
 	private $_list;
@@ -11,7 +12,8 @@ Class FRest {
 		return $this;
 	}
 	function load($fpath){
-		$this->fpath = $fpath;
+		global $base_path;
+		$this->fpath = $base_path.$fpath;
 		$this->is_exists = file_exists($fpath);;
 		if($this->is_exists){
 			$this->content = file_get_contents($fpath);

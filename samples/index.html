@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>
 	</title>
+	<!-- <base href=""> -->
 	<script src="libs/jquery-1.7.1.min.js"></script>
 	<script src="libs/underscore+backbone.js"></script>
 	<link rel="stylesheet" href="libs/bootstrap2/css/bootstrap.min.css">
@@ -31,7 +32,7 @@
 				
 			</ol>
 			<script>
-				var url = "data/file/test.json";
+				var url = "../data/file/test.json";
 				$.post(url,{test:"content"},function(data){
 					printConsole("POST successfully","success");
 					$.get(url,function(data){
@@ -46,7 +47,7 @@
 					});
 				});
 				var Model = Backbone.Model.extend({
-					url:"data/file/testbb.json"
+					url:"../data/file/testbb.json"
 				});
 				var m = new Model({
 					id:"testbb", //Backbone needs a id attr to identify !isNew().
@@ -66,7 +67,7 @@
 					}
 				});
 				var Coll = Backbone.Collection.extend({
-					url:"data/list/testlist.json/", // List Accessing with slash as end of url.
+					url:"../data/list/testlist.json/", // List Accessing with slash as end of url.
 					model:Backbone.Model.extend({
 						initialize:function(data){
 							var id = data.id;

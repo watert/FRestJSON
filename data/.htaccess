@@ -3,5 +3,5 @@ RewriteEngine On
 RewriteRule ^file_rest\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule list|file file_rest.php [L]
+RewriteRule list|json|file file_rest.php [L]
 </IfModule>
