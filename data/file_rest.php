@@ -4,17 +4,27 @@
  * 
 */
 
-$base_path = "";
+$base_path = "./";
 define(JSON_ENABLED, TRUE);
 Class FRest {
 	private $_list;
 	function __construct(){
 		return $this;
 	}
+	function is_writable(){
+		if($this->is_exists){
+			return is_writable($this->fpath);
+		}else {
+			global $base_path;
+			return is_writable($base_path);
+		}
+
+	}
 	function load($fpath){
 		global $base_path;
 		$this->fpath = $base_path.$fpath;
-		$this->is_exists = file_exists($fpath);;
+		$this->is_exists = file_exists($fpath);
+
 		if($this->is_exists){
 			$this->content = file_get_contents($fpath);
 			$this->obj = json_decode($this->content,true);
@@ -162,6 +172,9 @@ $frest = new FRest();
 $frest->load($fpath);
 
 $method = $_SERVER["REQUEST_METHOD"];
+if($method!="GET"&&!$frest->is_writable()){
+	http_400("file not writable, might not having appropriate permission of folder or file. ");
+}
 if($is_list){
 	$frest->list_init();
 	switch($method){

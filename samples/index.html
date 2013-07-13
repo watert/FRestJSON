@@ -45,6 +45,10 @@
 							}
 						});
 					});
+				}).fail(function(xhr){
+					// console.log("exhr",this,e,xhr);
+					var txt = xhr.responseText;
+					printConsole("<code>$.post(...).fail(xhr):xhr.responseText </code> Error: <br>"+txt,"error");
 				});
 				var Model = Backbone.Model.extend({
 					url:"../data/file/testbb.json"
@@ -55,6 +59,10 @@
 				});
 				window.m = m;
 				m.save({},{
+					error:function(e,xhr){
+						var txt = xhr.responseText;
+						printConsole("Backbone Save Error: <br>"+txt,"error");
+					},
 					success:function(){
 						printConsole("Backbone Save success","success");
 						m.fetch({success:function(){
