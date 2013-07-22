@@ -3,7 +3,7 @@
  * # File Based Restful JSON Service.
  * 
 */
-
+// error_reporting(E_ALL);
 Class FRest {
 	private $_list;
 	function __construct($base_path){
@@ -113,8 +113,7 @@ class FRestHTTP {
 	public function __construct($base_path)
 	{
 		// Default use Backbonejs input type: Content inside `php://input` .
-		$data = json_decode(file_get_contents('php://input'),true);
-		if(!$data)$data = $_POST;
+
 
 		$this->parse_query();
 		// Init File Rest handler
@@ -146,6 +145,7 @@ class FRestHTTP {
 	function set_request(){
 		$method = $this->method;
 		$frest = $this->frest;
+		$data = $this->data;
 		if($this->is_list){
 			$frest->list_init();
 			switch($method){
@@ -197,6 +197,10 @@ class FRestHTTP {
 		}
 	}
 	function parse_query(){
+		$data = json_decode(file_get_contents('php://input'),true);
+		if(!$data)$data = $_POST;
+		$this->data = $data;
+
 		if(isset($_GET["f"])){ // Original Fashion: using QUERYSTRING as input, non need of apache rewrite support
 			$fpath = $_GET["f"];
 			$is_list = isset($_GET["list"]);
