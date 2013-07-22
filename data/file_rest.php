@@ -216,10 +216,12 @@ class FRestHTTP {
 		}
 		$this->is_list = $is_list;
 		$this->fpath = $fpath;
+
+		$this->validate_extension();
 		return $this;
 	}
 	function validate_extension(){
-		$ext = pathinfo($fpath, PATHINFO_EXTENSION);
+		$ext = pathinfo($this->fpath, PATHINFO_EXTENSION);
 		if($ext!="json"){
 			http_ret(
 				"Use it as RESTful Server using URL like this: <br>
@@ -232,8 +234,6 @@ class FRestHTTP {
 		return true;
 	}
 }
-
-
 
 $frh = new FRestHTTP("./");
 $frh->set_request();
